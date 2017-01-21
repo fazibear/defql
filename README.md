@@ -1,6 +1,6 @@
 # Defql ![Package Version](https://img.shields.io/hexpm/v/defql.svg) [![Code Climate](https://codeclimate.com/github/fazibear/defql/badges/gpa.svg)](https://codeclimate.com/github/fazibear/defql) [![Build Status](https://travis-ci.org/fazibear/defql.svg?branch=master)](https://travis-ci.org/fazibear/defql)
 
-Module provides macros to create function with SQL as a body.
+Create elixir functions with SQL as a body.
 
 ## Installation
 
