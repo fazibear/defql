@@ -8,7 +8,21 @@ defmodule Defql.Mixfile do
       elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps: deps()
+      description: "Create elixir functions with SQL as a body.",
+      package: package(),
+      deps: deps(),
+      docs: [
+        main: Defql,
+        source_url: "https://github.com/fazibear/defql"
+      ]
+   ]
+  end
+
+  def package do
+    [
+      maintainers: ["Michał Kalbarczyk"],
+      licenses: ["MIT"],
+      links: %{github: "https://github.com/fazibear/airbrakex"}
    ]
   end
 
@@ -29,6 +43,7 @@ defmodule Defql.Mixfile do
 
       {:ecto, "~> 2.0", optional: true},
 
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
