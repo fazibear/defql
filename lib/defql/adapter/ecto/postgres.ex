@@ -1,5 +1,9 @@
 if Code.ensure_loaded?(Ecto) do
   defmodule Defql.Adapter.Ecto.Postgres do
+    @moduledoc """
+    Adapter for postgres connection thru ecto.
+    """
+
     @behaviour Defql.Adapter
     @repo Application.get_env(:defql, :connection)[:repo]
 
@@ -29,7 +33,8 @@ if Code.ensure_loaded?(Ecto) do
     end
 
     def query(query, params) do
-      Ecto.Adapters.SQL.query(@repo, query, params)
+      @repo
+      |> Ecto.Adapters.SQL.query(query, params)
       |> Postgres.result
     end
   end

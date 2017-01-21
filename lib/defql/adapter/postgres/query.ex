@@ -80,7 +80,7 @@ defmodule Defql.Adapter.Postgres.Query do
 
   defp get_indicies(params, idx \\ 0) do
     params
-    |> Enum.with_index(idx+1)
+    |> Enum.with_index(idx + 1)
     |> Enum.map(fn ({_, i}) -> "$#{i}" end)
     |> Enum.join(", ")
   end
@@ -100,7 +100,7 @@ defmodule Defql.Adapter.Postgres.Query do
     if length(params) > 0 do
       [" WHERE ",
       params
-      |> Enum.with_index(idx+1)
+      |> Enum.with_index(idx + 1)
       |> Enum.map(fn({{a, _}, i}) -> "#{a} = $#{i}" end)
       |> Enum.join(" AND ")
       ]

@@ -1,4 +1,8 @@
 defmodule Defql.Adapter.Test do
+  @moduledoc """
+  Adapter for testing.
+  """
+
   @behaviour Defql.Adapter
 
   defstruct query: "",

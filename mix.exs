@@ -27,7 +27,9 @@ defmodule Defql.Mixfile do
       {:db_connection, "~> 1.1", optional: true},
       {:postgrex, ">= 0.13.0", optional: true},
 
-      {:ecto, "~> 2.0", optional: true}
+      {:ecto, "~> 2.0", optional: true},
+
+      {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end

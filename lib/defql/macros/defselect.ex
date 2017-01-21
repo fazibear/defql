@@ -1,4 +1,6 @@
 defmodule Defql.Macros.Defselect do
+  @moduledoc false
+
   alias Defql.Connection
 
   @doc false

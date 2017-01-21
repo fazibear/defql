@@ -20,16 +20,17 @@ if Code.ensure_loaded?(Postgrex) do
     alias Defql.Adapter.Postgres.Query
 
     def start(_type, _args) do
-      params()
+      start_params()
       |> Postgrex.start_link
     end
 
     def query(query, params) do
-      Postgrex.query(__MODULE__, query,  params, @connection)
-      |> result()
+      __MODULE__
+      |> Postgrex.query(query,  params, @connection)
+      |> query_result()
     end
 
-    def result(result) do
+    def query_result(result) do
       case result do
         {:ok, result} -> {:ok, output(result)}
         {:error, error} -> {:error, error.postgres.message}
@@ -56,8 +57,9 @@ if Code.ensure_loaded?(Postgrex) do
       query(query, params)
     end
 
-    defp params() do
-      Application.get_env(:defql, :connection)
+    defp start_params() do
+      :defql
+      |> Application.get_env(:connection)
       |> Keyword.put(:name, __MODULE__)
       |> Keyword.put(:type, Defql.Adapters.Postgres.Type)
     end
@@ -65,7 +67,7 @@ if Code.ensure_loaded?(Postgrex) do
     defp output(%{rows: nil}), do: []
     defp output(%{rows: rows, columns: cols}) do
       for row <- rows, cols = atomize_columns(cols) do
-        match_columns_to_row(row,cols) |> to_map
+        row |> match_columns_to_row(cols) |> to_map
       end
     end
 
