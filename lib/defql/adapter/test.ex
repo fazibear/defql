@@ -32,7 +32,7 @@ defmodule Defql.Adapter.Test do
     query("DELETE #{table}", params)
   end
 
-  def update(table, params, conds) do
+  def update(table, params, _conds) do
     query("UPDATE #{table}", params)
   end
 end

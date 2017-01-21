@@ -22,7 +22,7 @@ defmodule Defql.Mixfile do
     [
       maintainers: ["Michał Kalbarczyk"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/fazibear/airbrakex"}
+      links: %{github: "https://github.com/fazibear/defql"}
    ]
   end
 
@@ -35,13 +35,13 @@ defmodule Defql.Mixfile do
 
   defp deps do
     [
-      {:poolboy, "~> 1.5"},
+      {:poolboy, ">= 1.0.0"},
 
       # Drivers
       {:db_connection, "~> 1.1", optional: true},
       {:postgrex, ">= 0.13.0", optional: true},
 
-      {:ecto, "~> 2.0", optional: true},
+      {:ecto, "~> 2.1", optional: true},
 
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:credo, "~> 0.5", only: [:dev, :test]}
