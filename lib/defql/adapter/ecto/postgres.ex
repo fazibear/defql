@@ -35,7 +35,7 @@ if Code.ensure_loaded?(Ecto) do
     def query(query, params) do
       @repo
       |> Ecto.Adapters.SQL.query(query, params)
-      |> Postgres.result
+      |> Postgres.query_result
     end
   end
 end
