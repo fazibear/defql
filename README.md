@@ -1,4 +1,4 @@
-# Defql ![Package Version](https://img.shields.io/hexpm/v/defql.svg) [![Code Climate](https://codeclimate.com/github/fazibear/defql/badges/gpa.svg)](https://codeclimate.com/github/fazibear/defql) [![Build Status](https://travis-ci.org/fazibear/defql.svg?branch=master)](https://travis-ci.org/fazibear/defql)
+# Defql [![Package Version](https://img.shields.io/hexpm/v/defql.svg)](https://hex.pm/packages/defql) [![Code Climate](https://codeclimate.com/github/fazibear/defql/badges/gpa.svg)](https://codeclimate.com/github/fazibear/defql) [![Build Status](https://travis-ci.org/fazibear/defql.svg?branch=master)](https://travis-ci.org/fazibear/defql)
 
 Create elixir functions with SQL as a body.
 
