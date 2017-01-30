@@ -110,7 +110,7 @@ defmodule Defql.Adapter.Postgres.Query do
   end
   defp do_get_conditions([{field, value} | other_conds], idx, acc) when is_list(value) do
     count = Enum.count(value)
-    placeholders = (idx..idx+count-1) |> Enum.map(&("$#{&1}")) |> Enum.join(", ")
+    placeholders = (idx..idx+count-1) |> Enum.map_join(", ", &("$#{&1}"))
     condition = "#{field} IN (#{placeholders})"
     do_get_conditions(other_conds, idx + count, [condition | acc])
   end
