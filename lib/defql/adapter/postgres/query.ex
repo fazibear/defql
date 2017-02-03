@@ -115,23 +115,25 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_conditions([], _, acc) do
     [" WHERE ", acc |> Enum.reverse |> Enum.join(" AND ")]
   end
-  defp get_conditions([{field, value} | other_conds], idx, acc) when is_list(value) do
-    count = Enum.count(value)
+  defp get_conditions([condition | other_conds], idx, acc) do
+    {next_idx, sql_fragment} = condition_to_sql(condition, idx)
+    get_conditions(other_conds, next_idx, [sql_fragment | acc])
+  end
+
+  defp condition_to_sql({field, list}, idx) when is_list(list) do
+    count = Enum.count(list)
     placeholders = (idx..idx+count-1) |> Enum.map_join(", ", &("$#{&1}"))
-    condition = "#{field} IN (#{placeholders})"
-    get_conditions(other_conds, idx + count, [condition | acc])
+    {idx+count, "#{field} IN (#{placeholders})"}
   end
-  defp get_conditions([{field, {:in, array}} | other_conds], idx, acc) do
-    get_conditions([{field, array} | other_conds], idx, acc)
+  defp condition_to_sql({field, tuple}, idx) when is_tuple(tuple) do
+    case tuple do
+      {:in, list} -> condition_to_sql({field, list}, idx)
+      {:like, _}  -> {idx+1, "#{field} LIKE $#{idx}"}
+      {:ilike, _} -> {idx+1, "#{field} ILIKE $#{idx}"}
+    end
   end
-  defp get_conditions([{field, {:like, _}} | other_conds], idx, acc) do
-    get_conditions(other_conds, idx + 1, ["#{field} LIKE $#{idx}" | acc])
-  end
-  defp get_conditions([{field, {:ilike, _}} | other_conds], idx, acc) do
-    get_conditions(other_conds, idx + 1, ["#{field} ILIKE $#{idx}" | acc])
-  end
-  defp get_conditions([{field, _} | other_conds], idx, acc) do
-    get_conditions(other_conds, idx + 1, ["#{field} = $#{idx}" | acc])
+  defp condition_to_sql({field, _}, idx) do
+    {idx+1, "#{field} = $#{idx}"}
   end
 
   defp get_set(params, idx \\ 1) do
