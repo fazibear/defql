@@ -76,7 +76,15 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_values(params) do
     params
     |> Keyword.values
+    |> Enum.map(&extract_value/1)
     |> List.flatten
+  end
+
+  defp extract_value({term, value}) when is_atom(term) do
+    value
+  end
+  defp extract_value(value) do
+    value
   end
 
   defp get_indicies(params, idx \\ 0) do
@@ -112,6 +120,15 @@ defmodule Defql.Adapter.Postgres.Query do
     placeholders = (idx..idx+count-1) |> Enum.map_join(", ", &("$#{&1}"))
     condition = "#{field} IN (#{placeholders})"
     get_conditions(other_conds, idx + count, [condition | acc])
+  end
+  defp get_conditions([{field, {:in, array}} | other_conds], idx, acc) do
+    get_conditions([{field, array} | other_conds], idx, acc)
+  end
+  defp get_conditions([{field, {:like, _}} | other_conds], idx, acc) do
+    get_conditions(other_conds, idx + 1, ["#{field} LIKE $#{idx}" | acc])
+  end
+  defp get_conditions([{field, {:ilike, _}} | other_conds], idx, acc) do
+    get_conditions(other_conds, idx + 1, ["#{field} ILIKE $#{idx}" | acc])
   end
   defp get_conditions([{field, _} | other_conds], idx, acc) do
     get_conditions(other_conds, idx + 1, ["#{field} = $#{idx}" | acc])
