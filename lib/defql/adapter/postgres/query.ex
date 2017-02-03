@@ -97,25 +97,24 @@ defmodule Defql.Adapter.Postgres.Query do
     |> Enum.join(",")
   end
 
-  defp get_conditions(params, idx \\ 0) do
-    if length(params) > 0 do
-      do_get_conditions(params, idx+1, [])
-    else
-      ""
-    end
+
+  defp get_conditions(params, idx \\ 0)
+  defp get_conditions([], _), do: ""
+  defp get_conditions(params, idx) do
+    get_conditions(params, idx+1, [])
   end
 
-  defp do_get_conditions([], _, acc) do
+  defp get_conditions([], _, acc) do
     [" WHERE ", acc |> Enum.reverse |> Enum.join(" AND ")]
   end
-  defp do_get_conditions([{field, value} | other_conds], idx, acc) when is_list(value) do
+  defp get_conditions([{field, value} | other_conds], idx, acc) when is_list(value) do
     count = Enum.count(value)
     placeholders = (idx..idx+count-1) |> Enum.map_join(", ", &("$#{&1}"))
     condition = "#{field} IN (#{placeholders})"
-    do_get_conditions(other_conds, idx + count, [condition | acc])
+    get_conditions(other_conds, idx + count, [condition | acc])
   end
-  defp do_get_conditions([{field, _} | other_conds], idx, acc) do
-    do_get_conditions(other_conds, idx + 1, ["#{field} = $#{idx}" | acc])
+  defp get_conditions([{field, _} | other_conds], idx, acc) do
+    get_conditions(other_conds, idx + 1, ["#{field} = $#{idx}" | acc])
   end
 
   defp get_set(params, idx \\ 1) do
