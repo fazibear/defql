@@ -76,13 +76,20 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_values(params) do
     params
     |> Keyword.values
+    |> Enum.map(&extract_value/1)
+    |> List.flatten
   end
 
-  defp get_indicies(params, idx \\ 0) do
-    params
-    |> Enum.with_index(idx + 1)
-    |> Enum.map(fn ({_, i}) -> "$#{i}" end)
-    |> Enum.join(", ")
+  defp extract_value({term, value}) when is_atom(term) do
+    value
+  end
+  defp extract_value(value) do
+    value
+  end
+
+  defp get_indicies(params, idx \\ 1) do
+    last_idx = idx + length(params) - 1
+    (idx..last_idx) |> Enum.map_join(", ", &("$#{&1}"))
   end
 
   defp get_columns_list(params) do
@@ -96,17 +103,31 @@ defmodule Defql.Adapter.Postgres.Query do
     |> Enum.join(",")
   end
 
-  defp get_conditions(params, idx \\ 0) do
-    if length(params) > 0 do
-      [" WHERE ",
-      params
-      |> Enum.with_index(idx + 1)
-      |> Enum.map(fn({{a, _}, i}) -> "#{a} = $#{i}" end)
-      |> Enum.join(" AND ")
-      ]
-    else
-      ""
+
+  defp get_conditions(params, idx \\ 0)
+  defp get_conditions([], _), do: ""
+  defp get_conditions(params, idx) do
+    conditions = params
+    |> Enum.map_reduce(idx + 1, &condition_to_sql/2)
+    |> elem(0)
+    |> Enum.join(" AND ")
+
+    [" WHERE ", conditions]
+  end
+
+  defp condition_to_sql({field, list}, idx) when is_list(list) do
+    placeholders = get_indicies(list, idx)
+    {"#{field} IN (#{placeholders})", idx + length(list)}
+  end
+  defp condition_to_sql({field, tuple}, idx) when is_tuple(tuple) do
+    case tuple do
+      {:in, list} -> condition_to_sql({field, list}, idx)
+      {:like, _}  -> {"#{field} LIKE $#{idx}", idx + 1}
+      {:ilike, _} -> {"#{field} ILIKE $#{idx}", idx + 1}
     end
+  end
+  defp condition_to_sql({field, _}, idx) do
+    {"#{field} = $#{idx}", idx + 1}
   end
 
   defp get_set(params, idx \\ 1) do
