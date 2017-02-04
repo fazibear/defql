@@ -86,8 +86,7 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_indicies(params, idx \\ 1) do
     params
     |> Enum.with_index(idx)
-    |> Enum.map(fn ({_, i}) -> "$#{i}" end)
-    |> Enum.join(", ")
+    |> Enum.map_join(", ", fn ({_, i}) -> "$#{i}" end)
   end
 
   defp get_columns_list(params) do
@@ -122,7 +121,6 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_set(params, idx \\ 1) do
     params
     |> Enum.with_index(idx)
-    |> Enum.map(fn({{a, _}, i}) -> "#{a} = $#{i}" end)
-    |> Enum.join(", ")
+    |> Enum.map_join(", ", fn({{a, _}, i}) -> "#{a} = $#{i}" end)
   end
 end
