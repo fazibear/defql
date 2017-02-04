@@ -72,9 +72,15 @@ UserQuery.get_by_name("Ela", 4) # => {:ok, [%{...}, %{...}]}
 
 `%{...}` It's a hash with user properties straight from database.
 
+Supported condition statements:
+- `[user_id: [1,2,3,4]]`
+- `[user_id: {:in, [1,2,3,4,5]}`
+- `[name: {:like, "%john%"]`
+- `[name: {:ilike, "%john"]`
+
 ## TODO
 
 - [ ] MySQL support
-- [ ] Support `IN` with array ex: `%{id: [1,2,3]}`
 - [ ] Cleanup ECTO adapter
 - [ ] Support database errors
+- [ ] Transactions
