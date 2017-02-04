@@ -83,9 +83,9 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_value({_, value}), do: value
   defp get_value(value), do: value
 
-  defp get_indicies(params, idx \\ 0) do
+  defp get_indicies(params, idx \\ 1) do
     params
-    |> Enum.with_index(idx + 1)
+    |> Enum.with_index(idx)
     |> Enum.map(fn ({_, i}) -> "$#{i}" end)
     |> Enum.join(", ")
   end
@@ -116,7 +116,7 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_condition({param, list}, i) when is_list(list), do: get_condition({param, {:in, list}}, i)
   defp get_condition({param, {:like, _}}, i), do: {"#{param} LIKE $#{i}", i + 1}
   defp get_condition({param, {:ilike, _}}, i), do: {"#{param} ILIKE $#{i}", i + 1}
-  defp get_condition({param, {:in, list}}, i), do: {"#{param} IN (#{get_indicies(list, i - 1)})", i + length(list)}
+  defp get_condition({param, {:in, list}}, i), do: {"#{param} IN (#{get_indicies(list, i)})", i + length(list)}
   defp get_condition({param, _}, i), do: {"#{param} = $#{i}", i + 1}
 
   defp get_set(params, idx \\ 1) do
