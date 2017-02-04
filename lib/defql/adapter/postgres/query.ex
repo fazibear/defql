@@ -87,11 +87,9 @@ defmodule Defql.Adapter.Postgres.Query do
     value
   end
 
-  defp get_indicies(params, idx \\ 0) do
-    params
-    |> Enum.with_index(idx + 1)
-    |> Enum.map(fn ({_, i}) -> "$#{i}" end)
-    |> Enum.join(", ")
+  defp get_indicies(params, idx \\ 1) do
+    last_idx = idx + length(params) - 1
+    (idx..last_idx) |> Enum.map_join(", ", &("$#{&1}"))
   end
 
   defp get_columns_list(params) do
@@ -121,9 +119,8 @@ defmodule Defql.Adapter.Postgres.Query do
   end
 
   defp condition_to_sql({field, list}, idx) when is_list(list) do
-    count = Enum.count(list)
-    placeholders = (idx..idx+count-1) |> Enum.map_join(", ", &("$#{&1}"))
-    {idx+count, "#{field} IN (#{placeholders})"}
+    placeholders = get_indicies(list, idx)
+    {idx+length(list), "#{field} IN (#{placeholders})"}
   end
   defp condition_to_sql({field, tuple}, idx) when is_tuple(tuple) do
     case tuple do
