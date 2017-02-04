@@ -107,30 +107,27 @@ defmodule Defql.Adapter.Postgres.Query do
   defp get_conditions(params, idx \\ 0)
   defp get_conditions([], _), do: ""
   defp get_conditions(params, idx) do
-    get_conditions(params, idx+1, [])
-  end
+    conditions = params 
+    |> Enum.map_reduce(idx+1, &condition_to_sql/2) 
+    |> elem(0)
+    |> Enum.join(" AND ")
 
-  defp get_conditions([], _, acc) do
-    [" WHERE ", acc |> Enum.reverse |> Enum.join(" AND ")]
-  end
-  defp get_conditions([condition | other_conds], idx, acc) do
-    {next_idx, sql_fragment} = condition_to_sql(condition, idx)
-    get_conditions(other_conds, next_idx, [sql_fragment | acc])
+    [" WHERE ", conditions]
   end
 
   defp condition_to_sql({field, list}, idx) when is_list(list) do
     placeholders = get_indicies(list, idx)
-    {idx+length(list), "#{field} IN (#{placeholders})"}
+    {"#{field} IN (#{placeholders})", idx+length(list)}
   end
   defp condition_to_sql({field, tuple}, idx) when is_tuple(tuple) do
     case tuple do
       {:in, list} -> condition_to_sql({field, list}, idx)
-      {:like, _}  -> {idx+1, "#{field} LIKE $#{idx}"}
-      {:ilike, _} -> {idx+1, "#{field} ILIKE $#{idx}"}
+      {:like, _}  -> {"#{field} LIKE $#{idx}", idx+1}
+      {:ilike, _} -> {"#{field} ILIKE $#{idx}", idx+1}
     end
   end
   defp condition_to_sql({field, _}, idx) do
-    {idx+1, "#{field} = $#{idx}"}
+    {"#{field} = $#{idx}", idx+1}
   end
 
   defp get_set(params, idx \\ 1) do
