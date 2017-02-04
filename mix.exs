@@ -5,7 +5,7 @@ defmodule Defql.Mixfile do
     [
       app: :defql,
       version: "0.1.0",
-      elixir: "~> 1.4",
+      elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: "Create elixir functions with SQL as a body.",
