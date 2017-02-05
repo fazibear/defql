@@ -74,9 +74,9 @@ UserQuery.get_by_name("Ela", 4) # => {:ok, [%{...}, %{...}]}
 
 Supported condition statements:
 - `[user_id: [1,2,3,4]]`
-- `[user_id: {:in, [1,2,3,4,5]}`
-- `[name: {:like, "%john%"]`
-- `[name: {:ilike, "%john"]`
+- `[user_id: {:in, [1,2,3,4,5]}]`
+- `[name: {:like, "%john%"}]`
+- `[name: {:ilike, "%john"}]`
 
 ## TODO
 
