@@ -80,7 +80,7 @@ defmodule Defql do
                            :table,
                            Keyword.get(unquote(opts),
                            :table))
-      
+
       def resolve_table(opts) do
         Keyword.get(opts, :table) ||
         @table ||
@@ -92,6 +92,6 @@ defmodule Defql do
       import Defql.Macros.Defdelete
       import Defql.Macros.Defupdate
       import Defql.Macros.Defselect
-    end      
+    end
   end
 end
