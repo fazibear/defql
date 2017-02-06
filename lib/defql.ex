@@ -76,7 +76,10 @@ defmodule Defql do
   @doc false
   defmacro __using__(opts) do
     quote do
-      Module.put_attribute(__MODULE__, :table, Keyword.get(unquote(opts), :table))
+      Module.put_attribute(__MODULE__,
+                           :table,
+                           Keyword.get(unquote(opts),
+                           :table))
       
       def resolve_table(opts) do
         Keyword.get(opts, :table) ||
