@@ -4,12 +4,12 @@ defmodule Defql.Macros.Definsert do
   alias Defql.Connection
 
   @doc false
-  defmacro definsert({name, _, params}, [table: table]) when is_atom(name) and is_list(params) and length(params) == 1 and is_atom(table) do
+  defmacro definsert({name, _, params}, opts \\ []) when is_atom(name) and is_list(params) and length(params) == 1 do
     [first | _] = params
     quote do
       def unquote(name)(unquote_splicing(params)) do
         Connection.insert(
-                            unquote(table),
+                            resolve_table(unquote(opts)),
                             unquote(first)
                           )
       end

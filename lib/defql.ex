@@ -74,13 +74,21 @@ defmodule Defql do
   """
 
   @doc false
-  defmacro __using__(_opts) do
+  defmacro __using__(opts) do
     quote do
+      Module.put_attribute(__MODULE__, :table, Keyword.get(unquote(opts), :table))
+      
+      def resolve_table(opts) do
+        Keyword.get(opts, :table) ||
+        @table ||
+        raise(ArgumentError, "table wasn't specified'")
+      end
+
       import Defql.Macros.Defquery
       import Defql.Macros.Definsert
       import Defql.Macros.Defdelete
       import Defql.Macros.Defupdate
       import Defql.Macros.Defselect
-    end
+    end      
   end
 end
