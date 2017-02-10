@@ -9,7 +9,7 @@ by adding `defql` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:defql, "~> 0.1.0"}]
+  [{:defql, "~> 0.1.1"}]
 end
 ```
 
@@ -68,6 +68,20 @@ UserQuery.update([name: "Other"],[id: "2"]) # => {:ok, [%{...}]}
 UserQuery.delete(id: "2") # => {:ok, [%{...}]}
 
 UserQuery.get_by_name("Ela", 4) # => {:ok, [%{...}, %{...}]}
+```
+
+We can define common table for the whole xQuery module.
+_As well as specify certain table for certain function (as shown above)._
+
+```elixir
+defmodule UserQuery do
+  use Defql, table: :users
+
+  defselect get(conds)
+  definsert add(params)
+  defupdate update(params, conds)
+  defdelete delete(conds)
+end
 ```
 
 `%{...}` It's a hash with user properties straight from database.
