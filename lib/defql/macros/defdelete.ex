@@ -20,6 +20,8 @@ defmodule Defql.Macros.Defdelete do
 
   @doc false
   defmacro defdelete(_, _) do
-    raise ArgumentError, "bla bla bla"
+    quote location: :keep do
+      raise ArgumentError, "wrong arguments"
+    end
   end
 end

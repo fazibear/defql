@@ -84,7 +84,7 @@ defmodule Defql do
       def resolve_table(opts) do
         Keyword.get(opts, :table) ||
         @table ||
-        raise(ArgumentError, "table wasn't specified'")
+        raise(ArgumentError, "table wasn't specified")
       end
 
       import Defql.Macros.Defquery
