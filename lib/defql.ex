@@ -70,7 +70,26 @@ defmodule Defql do
   UserQuery.get_by_name("Ela", 4) # => {:ok, [%{...}, %{...}]}
   ```
 
+  We can also define common table for the whole module.
+
+  ```elixir
+  defmodule UserQuery do
+    use Defql, table: :users
+
+    defselect get(conds)
+    definsert add(params)
+    defupdate update(params, conds)
+    defdelete delete(conds)
+  end
+  ```
+
   `%{...}` It's a hash with user properties straight from database.
+
+  Supported condition statements:
+  - `[user_id: [1,2,3,4]]`
+  - `[user_id: {:in, [1,2,3,4,5]}]`
+  - `[name: {:like, "%john%"}]`
+  - `[name: {:ilike, "%john"}]`
   """
 
   @doc false

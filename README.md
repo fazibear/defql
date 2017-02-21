@@ -70,8 +70,7 @@ UserQuery.delete(id: "2") # => {:ok, [%{...}]}
 UserQuery.get_by_name("Ela", 4) # => {:ok, [%{...}, %{...}]}
 ```
 
-We can define common table for the whole xQuery module.
-_As well as specify certain table for certain function (as shown above)._
+We can also define common table for the whole module.
 
 ```elixir
 defmodule UserQuery do
