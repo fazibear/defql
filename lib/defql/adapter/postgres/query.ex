@@ -3,7 +3,7 @@ defmodule Defql.Adapter.Postgres.Query do
   Module provides a query build rules.
   """
 
-  def select(table, params), do: select(table, params, ["*"])
+  def select(table, params, nil), do: select(table, params, ["*"])
   def select(table, params, columns) when is_map(params), do: select(table, Map.to_list(params), columns)
   def select(table, params, columns) do
     {

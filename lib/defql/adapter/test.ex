@@ -20,8 +20,9 @@ defmodule Defql.Adapter.Test do
     {:ok, result}
   end
 
-  def select(table, params) do
-    query("SELECT #{table}", params)
+  def select(table, params, nil), do: select(table, params, ["*"])
+  def select(table, params, columns) do
+    query("SELECT #{columns} FROM #{table}", params)
   end
 
   def insert(table, params) do

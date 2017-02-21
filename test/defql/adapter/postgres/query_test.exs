@@ -3,42 +3,42 @@ defmodule Test.Defql.Adapter.Postgres.Query do
   alias Defql.Adapter.Postgres.Query
 
   test "select with list" do
-    {query, params} = Query.select(:users, [a: 1, b: 2])
+    {query, params} = Query.select(:users, [a: 1, b: 2], nil)
 
     assert query == "SELECT * FROM users WHERE a=$1 AND b=$2"
     assert params == [1,2]
   end
 
   test "select with map" do
-    {query, params} = Query.select(:users, %{a: 1, b: 2})
+    {query, params} = Query.select(:users, %{a: 1, b: 2}, nil)
 
     assert query == "SELECT * FROM users WHERE a=$1 AND b=$2"
     assert params == [1,2]
   end
 
   test "select with IN array condition" do
-    {query, params} = Query.select(:users, [a: [1, 5, 7], b: 2])
+    {query, params} = Query.select(:users, [a: [1, 5, 7], b: 2], nil)
 
     assert query == "SELECT * FROM users WHERE a IN ($1,$2,$3) AND b=$4"
     assert params == [1, 5, 7, 2]
   end
 
   test "select with IN array condition with tuple syntax" do
-    {query, params} = Query.select(:users, [a: {:in, [1, 5, 7]}, b: 2])
+    {query, params} = Query.select(:users, [a: {:in, [1, 5, 7]}, b: 2], nil)
 
     assert query == "SELECT * FROM users WHERE a IN ($1,$2,$3) AND b=$4"
     assert params == [1, 5, 7, 2]
   end
 
   test "select with LIKE condition" do
-    {query, params} = Query.select(:users, [a: {:like, "%test%"}, b: 2])
+    {query, params} = Query.select(:users, [a: {:like, "%test%"}, b: 2], nil)
 
     assert query == "SELECT * FROM users WHERE a LIKE $1 AND b=$2"
     assert params == ["%test%", 2]
   end
 
   test "select with ILIKE condition" do
-    {query, params} = Query.select(:users, [a: {:ilike, "%test%"}, b: 2])
+    {query, params} = Query.select(:users, [a: {:ilike, "%test%"}, b: 2], nil)
 
     assert query == "SELECT * FROM users WHERE a ILIKE $1 AND b=$2"
     assert params == ["%test%", 2]

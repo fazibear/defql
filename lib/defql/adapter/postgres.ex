@@ -37,8 +37,8 @@ if Code.ensure_loaded?(Postgrex) do
       end
     end
 
-    def select(table, params) do
-      {query, params} = Query.select(table, params)
+    def select(table, params, columns) do
+      {query, params} = Query.select(table, params, columns)
       query(query, params)
     end
 

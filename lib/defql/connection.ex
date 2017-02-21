@@ -12,7 +12,7 @@ defmodule Defql.Connection do
   # end
 
   defdelegate start(type, args), to: @adapter
-  defdelegate select(table, params), to: @adapter
+  defdelegate select(table, params, columns), to: @adapter
   defdelegate insert(table, params), to: @adapter
   defdelegate delete(table, params), to: @adapter
   defdelegate update(table, params, conds), to: @adapter

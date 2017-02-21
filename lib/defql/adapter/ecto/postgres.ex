@@ -12,8 +12,8 @@ if Code.ensure_loaded?(Ecto) do
 
     def start(_type, _args), do: @repo.start_link
 
-    def select(table, params) do
-      {query, params} = Query.select(table, params)
+    def select(table, params, columns) do
+      {query, params} = Query.select(table, params, columns)
       query(query, params)
     end
 

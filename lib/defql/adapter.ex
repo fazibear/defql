@@ -27,7 +27,7 @@ defmodule Defql.Adapter do
   @doc """
   The callback to build select query.
   """
-  @callback select(table :: query, params :: params) :: return
+  @callback select(table :: query, params :: params, columnds :: params) :: return
 
   @doc """
   The callback to build insert query.
