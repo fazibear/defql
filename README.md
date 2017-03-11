@@ -23,7 +23,7 @@ Use with ecto:
 ```elixir
 config :defql, connection: [
   adapter: Defql.Adapter.Ecto.Postgres,
-  repo: Taped.Repo
+  repo: YourApp.Repo
 ]
 ```
 
