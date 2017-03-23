@@ -8,8 +8,11 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `defql` to your list of dependencies in `mix.exs`:
 
 ```elixir
-def deps do
-  [{:defql, "~> 0.1.1"}]
+defp deps do
+  [
+    {:defql, "~> 0.1.1"},
+    {:postgrex, ">= 0.13.0"},
+  ]
 end
 ```
 
@@ -31,6 +34,7 @@ Use standalone connection:
 
 ```elixir
 config :defql, connection: [
+  adapter: Defql.Adapter.Ecto.Postgres,
   hostname: "localhost",
   username: "username",
   password: "password",
