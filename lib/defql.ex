@@ -8,8 +8,11 @@ defmodule Defql do
   by adding `defql` to your list of dependencies in `mix.exs`:
 
   ```elixir
-  def deps do
-    [{:defql, "~> 0.1.0"}]
+  defp deps do
+    [
+      {:defql, "~> 0.1.1"},
+      {:postgrex, ">= 0.13.0"}, # optional
+    ]
   end
   ```
 
@@ -31,6 +34,7 @@ defmodule Defql do
 
   ```elixir
   config :defql, connection: [
+    adapter: Defql.Adapter.Postgres,
     hostname: "localhost",
     username: "username",
     password: "password",

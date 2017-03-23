@@ -11,7 +11,7 @@ by adding `defql` to your list of dependencies in `mix.exs`:
 defp deps do
   [
     {:defql, "~> 0.1.1"},
-    {:postgrex, ">= 0.13.0"},
+    {:postgrex, ">= 0.13.0"}, # optional
   ]
 end
 ```

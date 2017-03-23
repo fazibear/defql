@@ -28,7 +28,7 @@ defmodule Defql.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :postgrex],
+      extra_applications: [],
       mod: {Defql.Connection, []}
     ]
   end
