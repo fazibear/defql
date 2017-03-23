@@ -34,7 +34,7 @@ Use standalone connection:
 
 ```elixir
 config :defql, connection: [
-  adapter: Defql.Adapter.Ecto.Postgres,
+  adapter: Defql.Adapter.Postgres,
   hostname: "localhost",
   username: "username",
   password: "password",
